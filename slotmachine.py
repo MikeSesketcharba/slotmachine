@@ -1,5 +1,7 @@
 import random
 import time
+# termcolor module by vaultboy https://pypi.org/project/termcolor/
+from termcolor import colored
 
 # chances:
 nothing = 0.0
@@ -42,8 +44,13 @@ def insertbets():
     print("\nInsert the number of chips you'd like to bet.")
 
     insertedchips = input()
-    insertedchips = int(insertedchips)
+    while insertedchips.isnumeric() == False:
+            print("Please insert a valid input.")
+            insertedchips = input()
 
+    insertedchips = int(insertedchips)
+    if insertedchips > totalchips:
+        insertedchips = totalchips
     if insertedchips > 40:
         insertedchips = 40
 
@@ -172,7 +179,7 @@ Continue? Y/N""")
 playagain = "yes"
 moremoney = "yes"
 
-while playagain == "Yes" or playagain == "yes" or playagain == "y" or playagain == "YES" or playagain == "Y":
+while playagain.startswith("y") == True:
     cls()
 # bet insertion
     insertbets()
@@ -192,19 +199,22 @@ while playagain == "Yes" or playagain == "yes" or playagain == "y" or playagain 
     columnevaluation()
 # you lost
     if totalchips <= 0:
-        print("\nYou lost all your chips! Do you want to try again? Y/N")
+        print(colored("\nYou lost all your chips! Do you want to try again? Y/N", "red"))
         moremoney = input()
-        if moremoney == "yes" or moremoney == "YES" or moremoney == "y" or moremoney == "Y":
+        moremoney = moremoney.lower()
+        if moremoney.startswith("y") == False:
             totalchips = 100
         else:
             break
-    if moremoney == "no" or moremoney == "NO" or moremoney == "n" or moremoney == "N":
+    if moremoney.startswith("y") == False:
         break
 
     print("\nWanna play again? (Y/N or H for instructions and payout multipliers)")
     playagain = input()
+    playagain = playagain.lower()
 
-    if playagain == "help" or playagain == "h" or playagain == "HELP":
+    if playagain.startswith("h") == True:
         cls()
         help()
         playagain = input()
+        playagain = playagain.lower()
